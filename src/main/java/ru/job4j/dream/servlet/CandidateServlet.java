@@ -17,6 +17,13 @@ import java.io.IOException;
  * @since 09.11.2020
  */
 public class CandidateServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("candidates", Store.instOf().findAllCandidates());
+        req.getRequestDispatcher("candidates.jsp").forward(req, resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -26,6 +33,6 @@ public class CandidateServlet extends HttpServlet {
                         req.getParameter("name")
                 )
         );
-        resp.sendRedirect(req.getContextPath() + "/candidate/candidates.jsp");
+        resp.sendRedirect(req.getContextPath() + "/candidate/candidates.do");
     }
 }
