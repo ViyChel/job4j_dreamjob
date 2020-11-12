@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.Store" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="ru.job4j.dream.store.memory.PostMemStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -26,9 +26,9 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "");
+    Post post = new Post(0, "", "");
     if (id != null) {
-        post = Store.instOf().findPostById(Integer.parseInt(id));
+        post = PostMemStore.instOf().findById(Integer.parseInt(id));
     }
 %>
 <div class="container pt-3">
@@ -44,8 +44,10 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/post/posts.do?id=<%=post.getId()%>" method="post">
                     <div class="form-group">
-                        <label>Имя</label>
+                        <label>Название</label>
                         <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                        <label>Описание</label>
+                        <input type="text" class="form-control" name="description" value="<%=post.getDescription()%>">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

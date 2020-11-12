@@ -1,10 +1,9 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -41,7 +40,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${posts}" var="post">
+                    <c:forEach var="post" items="${posts}">
                         <tr>
                             <td>
                                 <a href='<c:url value="/post/edit.jsp?id=${post.id}"/>'>
