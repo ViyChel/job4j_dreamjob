@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="ru.job4j.dream.store.memory.PostMemStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
+<%@ page import="ru.job4j.dream.store.db.PostPsqlStore" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,7 +28,7 @@
     String id = request.getParameter("id");
     Post post = new Post(0, "", "");
     if (id != null) {
-        post = PostMemStore.instOf().findById(Integer.parseInt(id));
+        post = PostPsqlStore.instOf().findById(Integer.parseInt(id));
     }
 %>
 <div class="container pt-3">
