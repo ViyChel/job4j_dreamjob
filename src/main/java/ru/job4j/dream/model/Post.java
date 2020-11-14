@@ -117,14 +117,16 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return id == post.id;
+        return id == post.id
+                && Objects.equals(name, post.name)
+                && Objects.equals(description, post.description)
+                && Objects.equals(created, post.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name, description, created);
     }
-
 
     @Override
     public String toString() {
@@ -132,6 +134,7 @@ public class Post {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", description='" + description + '\''
+                + ", created=" + created.format(format)
                 + '}';
     }
 }

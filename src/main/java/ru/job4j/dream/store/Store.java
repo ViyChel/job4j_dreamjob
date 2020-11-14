@@ -12,7 +12,9 @@ import java.util.Collection;
 public interface Store<T> {
     Collection<T> findAll();
 
-    void save(T model);
+    T save(T model);
 
     T findById(int id);
+
+    boolean delete(int id);
 }

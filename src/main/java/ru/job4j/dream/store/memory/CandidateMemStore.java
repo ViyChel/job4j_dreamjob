@@ -42,15 +42,21 @@ public class CandidateMemStore implements Store<Candidate> {
     }
 
     @Override
-    public void save(Candidate candidate) {
+    public Candidate save(Candidate candidate) {
         if (candidate.getId() == 0) {
             candidate.setId(candidateID.incrementAndGet());
         }
         this.candidates.put(candidate.getId(), candidate);
+        return candidate;
     }
 
     @Override
     public Candidate findById(int id) {
         return this.candidates.get(id);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return this.candidates.remove(id) != null;
     }
 }

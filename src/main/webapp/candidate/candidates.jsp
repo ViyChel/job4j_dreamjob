@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -18,7 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <title>Работа мечты</title>
 </head>
 <body>
@@ -34,6 +35,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Фото</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -41,9 +43,27 @@
                         <tr>
                             <td>
                                 <a href='<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>'>
-                                    <i class="fa fa-edit mr-3"></i>
+                                    <i class="fas fa-edit mr-3"></i>
+                                </a>
+                                <a href='<c:url value="/candidates.do">
+                                    <c:param name="action" value="delete" />
+                                    <c:param name="id" value="${candidate.id}" />
+                                    </c:url>'>
+                                    <i class='far fa-trash-alt mr-3'></i>
                                 </a>
                                 <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <c:if test="${candidate.photo == null}">
+                                    <img src='<c:url value="/static/defaultPhoto.jpg"/>' width="150px"
+                                         height="100px"/>
+                                    <a href="<c:url value='/static/defaultPhoto.jpg'/>">Download</a>
+                                </c:if>
+                                <c:if test="${candidate.photo != null}">
+                                    <img src="<c:url value='/download?photoId=${candidate.photo.id}'/>" width="150px"
+                                         height="100px"/>
+                                    <a href="<c:url value='/download?photoId=${candidate.photo.id}'/>">Download</a>
+                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>

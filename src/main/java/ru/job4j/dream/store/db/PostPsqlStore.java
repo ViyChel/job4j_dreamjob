@@ -22,6 +22,11 @@ import java.util.*;
 public class PostPsqlStore implements Store<Post> {
     private static final ConnectorDB CONNECTOR_DB = ConnectorDB.getInstance();
     private static final Log LOG = LogFactory.getLog(PostPsqlStore.class.getName());
+    private static final String FIND_ALL = "SELECT * FROM posts;";
+    private static final String FIND_BY_ID = "SELECT * FROM posts WHERE id = ?;";
+    private static final String CREATE = "INSERT INTO posts(name, description) VALUES (?, ?);";
+    private static final String UPDATE = "UPDATE posts SET name =?, description =? WHERE id =?;";
+    private static final String DELETE = "DELETE FROM posts WHERE id =?;";
 
     private PostPsqlStore() {
     }
@@ -46,12 +51,12 @@ public class PostPsqlStore implements Store<Post> {
     @Override
     public Collection<Post> findAll() {
         List<Post> posts = new ArrayList<>();
-        try (Connection cn = connect();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM posts;")
-        ) {
+        try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_ALL)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(it.getInt("id"), it.getString("name"), it.getString("description")));
+                    posts.add(new Post(it.getInt("id"),
+                            it.getString("name"),
+                            it.getString("description")));
                 }
             }
         } catch (Exception e) {
@@ -63,9 +68,7 @@ public class PostPsqlStore implements Store<Post> {
     @Override
     public Post findById(int id) {
         Post post = new Post(0, "", "");
-        try (Connection cn = connect();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM posts WHERE id = ?;")
-        ) {
+        try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -81,19 +84,25 @@ public class PostPsqlStore implements Store<Post> {
     }
 
     @Override
-    public void save(Post post) {
-        if (post.getId() == 0) {
-            create(post);
-        } else {
-            update(post);
+    public boolean delete(int id) {
+        boolean result = false;
+        try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(DELETE)) {
+            ps.setInt(1, id);
+            result = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
+        return result;
+    }
+
+    @Override
+    public Post save(Post post) {
+        return post.getId() == 0 ? create(post) : update(post);
     }
 
     private Post create(Post post) {
         try (Connection cn = connect();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO posts(name, description) VALUES (?, ?);",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
-        ) {
+             PreparedStatement ps = cn.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.execute();
@@ -108,16 +117,15 @@ public class PostPsqlStore implements Store<Post> {
         return post;
     }
 
-    private void update(Post post) {
-        try (Connection cn = connect();
-             PreparedStatement ps = cn.prepareStatement("UPDATE posts SET name =?, description =? WHERE id =?;")
-        ) {
+    private Post update(Post post) {
+        try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(UPDATE)) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setInt(3, post.getId());
-            ps.execute();
+            ps.executeUpdate();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
+        return post;
     }
 }

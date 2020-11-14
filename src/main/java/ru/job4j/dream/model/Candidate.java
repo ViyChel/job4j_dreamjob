@@ -12,6 +12,10 @@ import java.util.Objects;
 public class Candidate {
     private int id;
     private String name;
+    private Photo photo;
+
+    public Candidate() {
+    }
 
     /**
      * Instantiates a new Candidate.
@@ -22,6 +26,12 @@ public class Candidate {
     public Candidate(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Candidate(int id, String name, Photo photo) {
+        this.id = id;
+        this.name = name;
+        this.photo = photo;
     }
 
     /**
@@ -60,6 +70,14 @@ public class Candidate {
         this.name = name;
     }
 
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -70,12 +88,13 @@ public class Candidate {
         }
         Candidate candidate = (Candidate) o;
         return id == candidate.id
-                && Objects.equals(name, candidate.name);
+                && Objects.equals(name, candidate.name)
+                && Objects.equals(photo, candidate.photo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, photo);
     }
 
     @Override

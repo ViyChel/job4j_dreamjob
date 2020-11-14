@@ -1,10 +1,16 @@
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts (
    id SERIAL PRIMARY KEY,
    name TEXT,
    description TEXT
 );
 
-CREATE TABLE candidates (
+CREATE TABLE IF NOT EXISTS candidates (
    id SERIAL PRIMARY KEY,
-   name TEXT
+   name TEXT,
+   photo_id int REFERENCES photos(id)
+);
+
+CREATE TABLE IF NOT EXISTS photos (
+   id SERIAL PRIMARY KEY,
+   name VARCHAR(255)
 );

@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -19,6 +20,7 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
     <title>Работа мечты</title>
 </head>
@@ -45,6 +47,12 @@
                             <td>
                                 <a href='<c:url value="/post/edit.jsp?id=${post.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
+                                </a>
+                                <a href='<c:url value="/posts.do">
+                                                     <c:param name="action" value="delete" />
+                                                     <c:param name="id" value="${post.id}" />
+                                                     </c:url>'>
+                                    <i class='far fa-trash-alt mr-3'></i>
                                 </a>
                                 <c:out value="${post.name}"/>
                             </td>

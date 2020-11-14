@@ -5,6 +5,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -42,7 +43,7 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/post/posts.do?id=<%=post.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
                     <div class="form-group">
                         <label>Название</label>
                         <input type="text" class="form-control" name="name" value="<%=post.getName()%>">

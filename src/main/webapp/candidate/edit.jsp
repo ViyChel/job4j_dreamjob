@@ -5,6 +5,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -42,12 +43,17 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidate/candidates.do?id=<%=candidate.getId()%>"
-                      method="post">
+                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%> "
+                      method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
                     </div>
+                    <div>
+                        <span>Фотография</span><br>
+                        <input type="file"  name="file-name" accept="image/jpeg,image/png">
+                    </div>
+                    <br>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
             </div>

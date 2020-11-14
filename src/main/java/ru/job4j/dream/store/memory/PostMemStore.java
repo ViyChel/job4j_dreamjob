@@ -42,15 +42,21 @@ public class PostMemStore implements Store<Post> {
     }
 
     @Override
-    public void save(Post post) {
+    public Post save(Post post) {
         if (post.getId() == 0) {
             post.setId(postID.incrementAndGet());
         }
         this.posts.put(post.getId(), post);
+        return post;
     }
 
     @Override
     public Post findById(int id) {
         return this.posts.get(id);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return this.posts.remove(id) != null;
     }
 }

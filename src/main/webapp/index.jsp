@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -26,10 +27,10 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/post/posts.do"/>'>Вакансии</a>
+                <a class="nav-link" href='<c:url value="/posts.do"/>'>Вакансии</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/candidate/candidates.do"/>'>Кандидаты</a>
+                <a class="nav-link" href='<c:url value="/candidates.do"/>'>Кандидаты</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/post/edit.jsp"/>'>Добавить вакансию</a>
