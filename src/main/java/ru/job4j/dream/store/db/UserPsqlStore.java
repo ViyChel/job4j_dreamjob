@@ -2,7 +2,7 @@ package ru.job4j.dream.store.db;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import ru.job4j.dream.model.Photo;
+import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.Store;
 
 import java.sql.Connection;
@@ -14,26 +14,26 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Class PhotoPsqlStore.
+ * Class UserPsqlStore.
  *
  * @author Vitaly Yagufarov (for.viy@gmail.com)
  * @version 1.0
- * @since 21.11.2020
+ * @since 24.11.2020
  */
-public class PhotoPsqlStore implements Store<Photo> {
-    private static final PhotoPsqlStore STORE = new PhotoPsqlStore();
+public class UserPsqlStore implements Store<User> {
+    private static final UserPsqlStore STORE = new UserPsqlStore();
     private static final ConnectorDB CONNECTOR_DB = ConnectorDB.getInstance();
-    private static final Log LOG = LogFactory.getLog(PhotoPsqlStore.class.getName());
-    private static final String FIND_ALL = "SELECT * from photos;";
-    private static final String FIND_BY_ID = "SELECT * FROM photos WHERE id = ?;";
-    private static final String CREATE = "INSERT INTO photos (name) VALUES ( ? );";
-    private static final String UPDATE = "UPDATE photos SET name = ?  WHERE id = ?;";
-    private static final String DELETE = "DELETE FROM photos WHERE id = ?;";
+    private static final Log LOG = LogFactory.getLog(UserPsqlStore.class.getName());
+    private static final String FIND_ALL = "SELECT * from users;";
+    private static final String FIND_BY_ID = "SELECT * FROM users WHERE id = ?;";
+    private static final String CREATE = "INSERT INTO users (name, email, password) VALUES (?, ?, ?);";
+    private static final String UPDATE = "UPDATE users SET name = ?, email = ?, password = ?  WHERE id = ?;";
+    private static final String DELETE = "DELETE FROM users WHERE id = ?;";
 
-    private PhotoPsqlStore() {
+    private UserPsqlStore() {
     }
 
-    public static PhotoPsqlStore getStore() {
+    public static UserPsqlStore getStore() {
         return STORE;
     }
 
@@ -41,31 +41,36 @@ public class PhotoPsqlStore implements Store<Photo> {
         return CONNECTOR_DB.getConnection();
     }
 
+
     @Override
-    public Collection<Photo> findAll() {
-        List<Photo> photos = new ArrayList<>();
+    public Collection<User> findAll() {
+        List<User> users = new ArrayList<>();
         try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_ALL)) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    photos.add(new Photo(it.getInt("id"),
-                            it.getString("name")));
+                    users.add(new User(it.getInt("id"),
+                            it.getString("name"),
+                            it.getString("email"),
+                            it.getString("password")));
                 }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        return photos;
+        return users;
     }
 
     @Override
-    public Photo save(Photo model) {
+    public User save(User model) {
         return model.getId() == 0 ? create(model) : update(model);
     }
 
-    private Photo create(Photo model) {
+    private User create(User model) {
         try (Connection cn = connect();
              PreparedStatement ps = cn.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, model.getName());
+            ps.setString(2, model.getEmail());
+            ps.setString(3, model.getPassword());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -78,10 +83,12 @@ public class PhotoPsqlStore implements Store<Photo> {
         return model;
     }
 
-    private Photo update(Photo model) {
+    private User update(User model) {
         try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(UPDATE)) {
             ps.setString(1, model.getName());
-            ps.setInt(2, model.getId());
+            ps.setString(2, model.getEmail());
+            ps.setString(3, model.getPassword());
+            ps.setInt(4, model.getId());
             ps.execute();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -90,20 +97,22 @@ public class PhotoPsqlStore implements Store<Photo> {
     }
 
     @Override
-    public Photo findById(int id) {
-        Photo photo = new Photo(0, "");
+    public User findById(int id) {
+        User user = new User();
         try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    photo.setId(rs.getInt("id"));
-                    photo.setName(rs.getString("name"));
+                    user.setId(rs.getInt("id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
                 }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        return photo;
+        return user;
     }
 
     @Override
