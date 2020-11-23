@@ -15,13 +15,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Class AuthServlet.
+ * Class RegServlet.
  *
  * @author Vitaly Yagufarov (for.viy@gmail.com)
  * @version 1.0
- * @since 23.11.2020
+ * @since 24.11.2020
  */
-public class AuthServlet extends HttpServlet {
+public class RegServlet extends HttpServlet {
     private static final Store<User> STORE = UserPsqlStore.getStore();
     private static final Log LOG = LogFactory.getLog(CandidatePsqlStore.class.getName());
 
@@ -29,35 +29,34 @@ public class AuthServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        if ("true".equals(req.getParameter("exit"))) {
-            req.getSession().setAttribute("user", null);
-        }
-        req.setAttribute("error", null);
-        req.getRequestDispatcher("/auth/login.jsp").forward(req, resp);
+        req.setAttribute("user", req.getSession().getAttribute("user"));
+        req.getRequestDispatcher("/auth/reg.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
+        String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         HttpSession sc = req.getSession();
-        if (!"".equals(email) && !"".equals(password)) {
+        if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             User user = ((UserPsqlStore) STORE).findByEmail(email);
-            if (user.getId() != 0 && user.getPassword().equals(password)) {
+            if (user.getId() != 0) {
+                req.setAttribute("error", "Пользователь с таким email уже существует!");
+                doGet(req, resp);
+            } else {
+                user.setName(name);
+                user.setEmail(email);
+                user.setPassword(password);
+                STORE.save(user);
                 sc.setAttribute("user", user);
                 resp.sendRedirect(req.getContextPath() + "/posts.do");
-            } else {
-                authFail(req, resp);
             }
         } else {
-            authFail(req, resp);
+            req.setAttribute("error", "Заполните все поля!");
+            doGet(req, resp);
         }
-    }
-
-    private void authFail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("error", "Не верный email или пароль");
-        req.getRequestDispatcher("/auth/login.jsp").forward(req, resp);
     }
 }

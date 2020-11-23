@@ -27,7 +27,7 @@
                 <a class="nav-link" href='<c:url value="/candidate/edit.jsp"/>'>Создать кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/login.jsp" /> '> <c:out value="${user.name}"/> | Выйти</a>
+                <a class="nav-link" href='<c:url value="/auth.do" /> '> <c:out value="${user.name}"/> | Выйти</a>
             </li>
         </ul>
     </div>

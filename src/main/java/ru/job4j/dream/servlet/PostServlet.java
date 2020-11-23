@@ -22,7 +22,6 @@ public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
         Store<Post> store = PostPsqlStore.instOf();
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("delete")) {
@@ -38,7 +37,6 @@ public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
         PostPsqlStore.instOf().save(
                 new Post(
                         Integer.parseInt(req.getParameter("id")),

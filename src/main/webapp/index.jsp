@@ -1,4 +1,4 @@
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
@@ -38,9 +38,22 @@
             <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/candidate/edit.jsp"/>'>Создать кандидата</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/login.jsp" /> '> <c:out value="${user.name}"/> | Выйти</a>
-            </li>
+            <c:if test="${user == null}">
+                <li class="nav-item">
+                    <a class="nav-link" href='<c:url value="/reg.do"/>'>Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href='<c:url value="/auth.do"/> '> Войти</a>
+                </li>
+            </c:if>
+            <c:if test="${user != null}">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href='<c:url value="/auth.do"> <c:param name="exit" value="true"/> </c:url> '>
+                        <c:out value="${user.name}"/> | Выйти
+                    </a>
+                </li>
+            </c:if>
         </ul>
     </div>
     <div class="row">

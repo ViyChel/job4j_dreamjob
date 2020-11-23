@@ -26,6 +26,7 @@ public class UserPsqlStore implements Store<User> {
     private static final Log LOG = LogFactory.getLog(UserPsqlStore.class.getName());
     private static final String FIND_ALL = "SELECT * from users;";
     private static final String FIND_BY_ID = "SELECT * FROM users WHERE id = ?;";
+    private static final String FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?;";
     private static final String CREATE = "INSERT INTO users (name, email, password) VALUES (?, ?, ?);";
     private static final String UPDATE = "UPDATE users SET name = ?, email = ?, password = ?  WHERE id = ?;";
     private static final String DELETE = "DELETE FROM users WHERE id = ?;";
@@ -101,6 +102,24 @@ public class UserPsqlStore implements Store<User> {
         User user = new User();
         try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user.setId(rs.getInt("id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return user;
+    }
+
+    public User findByEmail(String email) {
+        User user = new User(0, "", "", "");
+        try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_BY_EMAIL)) {
+            ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     user.setId(rs.getInt("id"));

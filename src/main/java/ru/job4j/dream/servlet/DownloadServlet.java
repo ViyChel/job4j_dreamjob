@@ -24,14 +24,13 @@ public class DownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
         req.setAttribute("user", req.getSession().getAttribute("user"));
         int photoId = Integer.parseInt(req.getParameter("photoId"));
         String fileName = PHOTO_STORE.findById(photoId).getName();
         resp.setContentType("photoId=" + photoId);
         resp.setContentType("image/png; image/jpeg");
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        File file = new File("images/photo_id" + File.separator + fileName);
+        File file = new File("images" + File.separator + "photo_id" + File.separator + fileName);
         try (FileInputStream in = new FileInputStream(file)) {
             resp.getOutputStream().write(in.readAllBytes());
         }

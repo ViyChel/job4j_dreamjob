@@ -12,18 +12,16 @@ import ru.job4j.dream.store.Store;
 import ru.job4j.dream.store.db.CandidatePsqlStore;
 import ru.job4j.dream.store.db.PhotoPsqlStore;
 
-import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Class CandidateServlet.
@@ -41,9 +39,8 @@ public class CandidateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
         if (req.getParameter("action") != null) {
-            if (req.getParameter("action").equals("delete")) {
+            if ("delete".equals(req.getParameter("action"))) {
                 STORE.delete(Integer.parseInt(req.getParameter("id")));
             }
         }
@@ -56,7 +53,6 @@ public class CandidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        resp.setCharacterEncoding("UTF-8");
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
@@ -65,9 +61,9 @@ public class CandidateServlet extends HttpServlet {
         Candidate candidate = new Candidate();
         try {
             List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("images/photo_id");
+            File folder = new File("images" + File.separator +"photo_id");
             if (!folder.exists()) {
-                folder.mkdir();
+                folder.mkdirs();
             }
             for (FileItem item : items) {
                 if (!item.isFormField()) {
@@ -84,7 +80,7 @@ public class CandidateServlet extends HttpServlet {
                 } else {
                     String name = item.getFieldName();
                     if ("name".equals(name)) {
-                        candidate.setName(item.getString());
+                        candidate.setName(item.getString("UTF-8"));
                     }
                 }
             }
