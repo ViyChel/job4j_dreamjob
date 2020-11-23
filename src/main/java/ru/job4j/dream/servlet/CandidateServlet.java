@@ -12,6 +12,7 @@ import ru.job4j.dream.store.Store;
 import ru.job4j.dream.store.db.CandidatePsqlStore;
 import ru.job4j.dream.store.db.PhotoPsqlStore;
 
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -39,18 +40,23 @@ public class CandidateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("delete")) {
                 STORE.delete(Integer.parseInt(req.getParameter("id")));
             }
         }
         req.setAttribute("candidates", STORE.findAll());
+        req.setAttribute("user", req.getSession().getAttribute("user"));
         req.getRequestDispatcher("/candidate/candidates.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
@@ -89,6 +95,7 @@ public class CandidateServlet extends HttpServlet {
             candidate.setId(Integer.parseInt(req.getParameter("id")));
         }
         STORE.save(candidate);
+        req.setAttribute("user", req.getSession().getAttribute("user"));
         resp.sendRedirect(req.getContextPath() + "/candidates.do");
     }
 }

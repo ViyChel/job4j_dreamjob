@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
@@ -39,7 +39,7 @@
                 <a class="nav-link" href='<c:url value="/candidate/edit.jsp"/>'>Создать кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/login.jsp" />'>Войти</a>
+                <a class="nav-link" href='<c:url value="/login.jsp" /> '> <c:out value="${user.name}"/> | Выйти</a>
             </li>
         </ul>
     </div>

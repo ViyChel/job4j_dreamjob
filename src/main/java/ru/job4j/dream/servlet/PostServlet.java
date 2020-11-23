@@ -21,6 +21,8 @@ public class PostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         Store<Post> store = PostPsqlStore.instOf();
         if (req.getParameter("action") != null) {
             if (req.getParameter("action").equals("delete")) {
@@ -28,12 +30,15 @@ public class PostServlet extends HttpServlet {
             }
         }
         req.setAttribute("posts", store.findAll());
+        req.setAttribute("user", req.getSession().getAttribute("user"));
         req.getRequestDispatcher("/post/posts.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         PostPsqlStore.instOf().save(
                 new Post(
                         Integer.parseInt(req.getParameter("id")),
@@ -41,6 +46,7 @@ public class PostServlet extends HttpServlet {
                         req.getParameter("description")
                 )
         );
+        req.setAttribute("user", req.getSession().getAttribute("user"));
         resp.sendRedirect(req.getContextPath() + "/posts.do");
     }
 }

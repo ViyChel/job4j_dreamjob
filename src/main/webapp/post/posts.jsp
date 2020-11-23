@@ -1,9 +1,9 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -25,6 +25,27 @@
     <title>Работа мечты</title>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/posts.do"/>'>Вакансии</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/candidates.do"/>'>Кандидаты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/post/edit.jsp"/>'>Добавить вакансию</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/candidate/edit.jsp"/>'>Создать кандидата</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/login.jsp" /> '> <c:out value="${user.name}"/> | Выйти</a>
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="container pt-3">
 
     <div class="row">
