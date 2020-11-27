@@ -44,7 +44,6 @@ public class PostServlet extends HttpServlet {
                         req.getParameter("description")
                 )
         );
-        req.setAttribute("user", req.getSession().getAttribute("user"));
         resp.sendRedirect(req.getContextPath() + "/posts.do");
     }
 }
