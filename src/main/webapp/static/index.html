@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Form</h2>
+    <form class="form-horizontal" action="/action.do">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="firstname">Firstname:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="firstname" placeholder="Enter firstname" name="firstname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="lastname">Lastname:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="lastname" placeholder="Enter lastname" name="lastname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="sex">Sex:</label>
+            <div class="col-sm-10">
+                <label class="radio-inline"><input type="radio" name="optradio" checked>Male</label>
+                <label class="radio-inline"><input type="radio" name="optradio">Female</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Description:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="description" placeholder="Enter description"
+                       name="description">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="remember"> Remember me</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+<br>
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Sex</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>John</td>
+            <td>Doe</td>
+            <td>Male</td>
+            <td>Java junior</td>
+        </tr>
+        <tr>
+            <td>Mary</td>
+            <td>Moe</td>
+            <td>Shemale</td>
+            <td>Java middle</td>
+        </tr>
+        <tr>
+            <td>July</td>
+            <td>Dooley</td>
+            <td>Shemale</td>
+            <td>Java senior</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
