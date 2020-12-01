@@ -8,15 +8,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
-        function validate() {
+        function addRow() {
             var firstname = $('#firstname').val();
             var lastname = $('#lastname').val();
+            var sex = document.getElementById('male').checked ? 'male' : 'female';
             var description = $('#description').val();
             if (firstname === '' || lastname === '' || description === '') {
                 alert('Please fill in all fields!');
                 return false;
             }
-
+            $('#table tr:last').after(
+                '<tr>' +
+                '<td>' + firstname + '</td>' +
+                '<td>' + lastname + '</td>' +
+                '<td>' + sex + '</td>' +
+                '<td>' + description + '</td>' +
+                '</tr>'
+            );
         }
     </script>
 </head>
@@ -38,10 +46,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="sex">Sex:</label>
-            <div class="col-sm-10">
-                <label class="radio-inline"><input type="radio" name="optradio" checked>Male</label>
-                <label class="radio-inline"><input type="radio" name="optradio">Female</label>
+            <label class="control-label col-sm-2">Sex:</label>
+            <div class="custom-control custom-radio col-sm-8">
+                <label class="radio-inline"><input type="radio" id="male" name="sex" value="male" checked>Male</label>
+                <label class="radio-inline"><input type="radio" id="female" name="sex" value="female">Female</label>
             </div>
         </div>
         <div class="form-group">
@@ -60,14 +68,14 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" onclick="return validate();">Submit</button>
+                <button type="reset" class="btn btn-primary" onclick="addRow()">Submit</button>
             </div>
         </div>
     </form>
 </div>
 <br>
 <div class="container">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="table">
         <thead>
         <tr>
             <th>Firstname</th>
