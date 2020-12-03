@@ -3,6 +3,7 @@ package ru.job4j.dream.store.db;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.store.Store;
 
@@ -21,11 +22,12 @@ import java.util.List;
 public class CandidatePsqlStore implements Store<Candidate> {
     private static final ConnectorDB CONNECTOR_DB = ConnectorDB.getInstance();
     private static final Store<Photo> PHOTO_STORE = PhotoPsqlStore.getStore();
+    private static final Store<City> CITY_STORE = CityPsqlStore.getStore();
     private static final Log LOG = LogFactory.getLog(CandidatePsqlStore.class.getName());
     private static final String FIND_ALL = "SELECT * FROM candidates;";
     private static final String FIND_BY_ID = "SELECT * FROM candidates WHERE id = ?;";
-    private static final String CREATE = "INSERT INTO candidates (name, photo_id) VALUES (? , ?);";
-    private static final String UPDATE = "UPDATE candidates SET name = ?, photo_id = ?  WHERE id = ?;";
+    private static final String CREATE = "INSERT INTO candidates (name, photo_id, city_id) VALUES (? , ?, ?);";
+    private static final String UPDATE = "UPDATE candidates SET name = ?, photo_id = ?, city_id = ?  WHERE id = ?;";
     private static final String DELETE = "DELETE FROM candidates WHERE id = ?;";
 
 
@@ -61,6 +63,10 @@ public class CandidatePsqlStore implements Store<Candidate> {
                     if (photoId != null) {
                         candidate.setPhoto(PHOTO_STORE.findById(photoId));
                     }
+                    Integer cityId = it.getObject("city_id", Integer.class);
+                    if (cityId != null) {
+                        candidate.setCity(CITY_STORE.findById(cityId));
+                    }
                     candidates.add(candidate);
                 }
             }
@@ -82,6 +88,10 @@ public class CandidatePsqlStore implements Store<Candidate> {
                     Integer photoId = rs.getObject("photo_id", Integer.class);
                     if (photoId != null) {
                         candidate.setPhoto(PHOTO_STORE.findById(photoId));
+                    }
+                    Integer cityId = rs.getObject("city_id", Integer.class);
+                    if (cityId != null) {
+                        candidate.setCity(CITY_STORE.findById(cityId));
                     }
                 }
             }
@@ -121,6 +131,11 @@ public class CandidatePsqlStore implements Store<Candidate> {
             } else {
                 ps.setNull(2, Types.INTEGER);
             }
+            if (candidate.getCity() != null) {
+                ps.setInt(3, candidate.getCity().getId());
+            } else {
+                ps.setNull(3, Types.INTEGER);
+            }
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -141,7 +156,12 @@ public class CandidatePsqlStore implements Store<Candidate> {
             } else {
                 ps.setNull(2, Types.INTEGER);
             }
-            ps.setInt(3, candidate.getId());
+            if (candidate.getCity() != null) {
+                ps.setInt(3, candidate.getCity().getId());
+            } else {
+                ps.setNull(3, Types.INTEGER);
+            }
+            ps.setInt(4, candidate.getId());
             ps.execute();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);

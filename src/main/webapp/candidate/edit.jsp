@@ -1,4 +1,4 @@
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
 <%@ page import="ru.job4j.dream.store.db.CandidatePsqlStore" %>
@@ -21,6 +21,36 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script>
+        function validate() {
+            let fio = $('#fio').val();
+            let city = $('#city').val();
+            let photo = $('#photo').val();
+            if (fio === '' || city === '' || photo === '') {
+                alert('Please fill in all fields!');
+                return false;
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function showCities() {
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/dreamjob/city',
+                dataType: 'json'
+            }).done(function (data) {
+                let cityList = $('#city');
+                $.each(data, function (key, value) {
+                    cityList.append("<option value=" + key + ">" + value + "</option>");
+                });
+            }).fail(function (err) {
+                alert(err);
+            });
+        })
+    </script>
 
     <title>Работа мечты</title>
 </head>
@@ -71,14 +101,17 @@
                       method="post" enctype="multipart/form-data" accept-charset="UTF-8">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                        <input type="text" class="form-control" id="fio" name="name" value="<%=candidate.getName()%>">
                     </div>
-                    <div>
+                    <div class="form-group">
+                        <label>Город</label>
+                        <select name="city" id="city" class="browser-default custom-select" required> </select>
+                    </div>
+                    <div class="form-group">
                         <span>Фотография</span><br>
-                        <input type="file"  name="file-name" accept="image/jpeg,image/png">
+                        <input type="file" id="photo" name="file-name" accept="image/jpeg,image/png">
                     </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="return validate();">Сохранить</button>
                 </form>
             </div>
         </div>

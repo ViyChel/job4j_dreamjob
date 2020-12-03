@@ -13,7 +13,7 @@ public class Candidate {
     private int id;
     private String name;
     private Photo photo;
-
+    private City city;
     public Candidate() {
     }
 
@@ -32,6 +32,13 @@ public class Candidate {
         this.id = id;
         this.name = name;
         this.photo = photo;
+    }
+
+    public Candidate(int id, String name, Photo photo, City city) {
+        this.id = id;
+        this.name = name;
+        this.photo = photo;
+        this.city = city;
     }
 
     /**
@@ -76,6 +83,14 @@ public class Candidate {
 
     public void setPhoto(Photo photo) {
         this.photo = photo;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override

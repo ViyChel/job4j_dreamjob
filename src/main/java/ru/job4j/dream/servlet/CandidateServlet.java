@@ -7,9 +7,11 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.store.Store;
 import ru.job4j.dream.store.db.CandidatePsqlStore;
+import ru.job4j.dream.store.db.CityPsqlStore;
 import ru.job4j.dream.store.db.PhotoPsqlStore;
 
 import javax.servlet.ServletContext;
@@ -33,6 +35,7 @@ import java.util.UUID;
 public class CandidateServlet extends HttpServlet {
     private static final Store<Candidate> STORE = CandidatePsqlStore.instOf();
     private static final PhotoPsqlStore PHOTO_STORE = PhotoPsqlStore.getStore();
+    private static final CityPsqlStore CITY_STORE = CityPsqlStore.getStore();
     private static final Log LOG = LogFactory.getLog(CandidatePsqlStore.class.getName());
 
     @Override
@@ -81,6 +84,9 @@ public class CandidateServlet extends HttpServlet {
                     String name = item.getFieldName();
                     if ("name".equals(name)) {
                         candidate.setName(item.getString("UTF-8"));
+                    } else if ("city".equals(name)) {
+                        int cityId = Integer.parseInt(item.getString());
+                        candidate.setCity(CITY_STORE.findById(cityId));
                     }
                 }
             }

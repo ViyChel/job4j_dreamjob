@@ -60,6 +60,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Город</th>
                         <th scope="col">Фото</th>
                     </tr>
                     </thead>
@@ -77,6 +78,9 @@
                                     <i class='far fa-trash-alt mr-3'></i>
                                 </a>
                                 <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <c:out value="${candidate.city.name}" />
                             </td>
                             <td>
                                 <c:if test="${candidate.photo == null}">
