@@ -24,7 +24,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="row justify-content-end">
+    <div class="row justify-content-center">
         <ul class="nav">
             <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/reg.do"/>'>Регистрация</a>
@@ -33,8 +33,8 @@
     </div>
 </div>
 <div class="container pt-3">
-    <div class="row">
-        <div class="card" style="width: 100%">
+    <div class="row justify-content-center">
+        <div class="card" style="width: 25%">
             <div class="card-header">
                 Авторизация
             </div>
