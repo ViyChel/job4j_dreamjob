@@ -64,7 +64,7 @@ public class CandidateServlet extends HttpServlet {
         Candidate candidate = new Candidate();
         try {
             List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("images" + File.separator +"photo_id");
+            File folder = new File("images" + File.separator + "photo_id");
             if (!folder.exists()) {
                 folder.mkdirs();
             }

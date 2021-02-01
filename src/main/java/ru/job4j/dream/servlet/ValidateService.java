@@ -12,9 +12,9 @@ import java.util.List;
  * @version 1.0
  * @since 27.11.2020
  */
-public class ValidateService implements Validate{
+public class ValidateService implements Validate {
     private static final Validate SERVICE = new ValidateService();
-    private final List<User> list  = new ArrayList<>();
+    private final List<User> list = new ArrayList<>();
 
     public static Validate getInstance() {
         return SERVICE;

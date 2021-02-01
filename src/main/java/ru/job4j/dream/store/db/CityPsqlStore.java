@@ -91,19 +91,19 @@ public class CityPsqlStore implements Store<City> {
 
     @Override
     public City findById(int id) {
-        City City = new City(0, "");
+        City city = new City(0, "");
         try (Connection cn = connect(); PreparedStatement ps = cn.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    City.setId(rs.getInt("id"));
-                    City.setName(rs.getString("name"));
+                    city.setId(rs.getInt("id"));
+                    city.setName(rs.getString("name"));
                 }
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        return City;
+        return city;
     }
 
     @Override
